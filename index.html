@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Researcher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        form {
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            max-width: 400px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+        }
+        select, input[type="text"], button {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .results {
+            margin: 20px auto;
+            max-width: 600px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Food Researcher</h1>
+
+    <form id="foodForm">
+        <label for="province">จังหวัด:</label>
+        <input type="text" id="province" name="province" required>
+
+        <label for="district">อำเภอ:</label>
+        <input type="text" id="district" name="district" required>
+
+        <label for="subdistrict">ตำบล:</label>
+        <input type="text" id="subdistrict" name="subdistrict" required>
+
+        <label for="road">ถนน (ไม่จำเป็นต้องกรอก):</label>
+        <input type="text" id="road" name="road">
+
+        <label for="menuType">เลือกประเภทเมนู:</label>
+        <select id="menuType" name="menuType" required>
+            <option value="" disabled selected>เลือกประเภทเมนู</option>
+            <option value="คาว">เมนูคาว</option>
+            <option value="หวาน">เมนูหวาน</option>
+        </select>
+
+        <div id="cuisineOptions" style="display: none;">
+            <label for="cuisineType">เลือกประเภทเมนูคาว:</label>
+            <select id="cuisineType" name="cuisineType">
+                <option value="" disabled selected>เลือกประเภทเมนูคาว</option>
+                <option value="ต้ม">ต้ม</option>
+                <option value="ผัด">ผัด</option>
+                <option value="แกง">แกง</option>
+                <option value="ทอด">ทอด</option>
+            </select>
+        </div>
+
+        <div id="dessertOptions" style="display: none;">
+            <label for="dessertType">เลือกประเภทเมนูหวาน:</label>
+            <select id="dessertType" name="dessertType">
+                <option value="" disabled selected>เลือกประเภทเมนูหวาน</option>
+                <option value="ร้อน">ร้อน</option>
+                <option value="เย็น">เย็น</option>
+            </select>
+        </div>
+
+        <button type="button" onclick="findRestaurants()">ค้นหาร้านอาหาร</button>
+    </form>
+
+    <div id="results" class="results" style="display: none;">
+        <h2>ร้านอาหารที่แนะนำ</h2>
+        <ul id="restaurantList"></ul>
+    </div>
+
+    <script>
+        // แสดงตัวเลือกประเภทเมนูตามที่เลือก
+        document.getElementById('menuType').addEventListener('change', function() {
+            const menuType = this.value;
+            document.getElementById('cuisineOptions').style.display = (menuType === 'คาว') ? 'block' : 'none';
+            document.getElementById('dessertOptions').style.display = (menuType === 'หวาน') ? 'block' : 'none';
+        });
+
+        // ฟังก์ชันค้นหาร้านอาหาร
+        function findRestaurants() {
+            const province = document.getElementById('province').value;
+            const district = document.getElementById('district').value;
+            const subdistrict = document.getElementById('subdistrict').value;
+            const road = document.getElementById('road').value;
+            const menuType = document.getElementById('menuType').value;
+            let selectedType = '';
+
+            if (menuType === 'คาว') {
+                selectedType = document.getElementById('cuisineType').value;
+            } else if (menuType === 'หวาน') {
+                selectedType = document.getElementById('dessertType').value;
+            }
+
+            if (!selectedType) {
+                selectedType = 'สุ่มเมนู'; // ถ้าไม่เลือกประเภทเมนู
+            }
+
+            // จำลองข้อมูลร้านอาหาร (จะต้องใช้ API หรือข้อมูลจริงในระบบจริง)
+            const restaurants = [
+                "ร้านอร่อยที่ 1",
+                "ร้านอร่อยที่ 2",
+                "ร้านอร่อยที่ 3",
+                "ร้านอร่อยที่ 4",
+                "ร้านอร่อยที่ 5"
+            ];
+
+            // แสดงผลร้านอาหาร
+            const restaurantList = document.getElementById('restaurantList');
+            restaurantList.innerHTML = '';
+
+            restaurants.forEach(function(restaurant) {
+                const li = document.createElement('li');
+                li.textContent = restaurant;
+                restaurantList.appendChild(li);
+            });
+
+            // แสดงผลลัพธ์
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
